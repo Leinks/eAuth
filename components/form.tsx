@@ -11,6 +11,38 @@ export default function Form({ type }: { type: "login" | "register" }) {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
+// const handleRegister = async (event: any) => {
+//   event.preventDefault();
+//   setLoading(true);
+//   // if (type === "register") {
+//     fetch("/api/auth/register", {
+//       method: "POST",
+//       headers: {
+//         "Content-Type": "application/json",
+//       },
+//       body: JSON.stringify({
+//         name: event.currentTarget.username.value,
+//         email: event.currentTarget.email.value,
+//         password: event.currentTarget.password.value,
+//       }),
+//     }).then(async (res) => {
+//       setLoading(false);
+//       if (res.status === 200) {
+//         toast.success("Account created! Redirecting to login...");
+//         setTimeout(() => {
+//           router.push("/login");
+//         }, 2000);
+//       } else {
+//         const { error } = await res.json();
+//         toast.error(error);
+//       }
+//     });
+//   // }
+// }
+
+
+
+
   return (
     <form
       onSubmit={(e) => {
@@ -31,6 +63,8 @@ export default function Form({ type }: { type: "login" | "register" }) {
               router.push("/protected");
             }
           });
+          
+          
         } else {
           fetch("/api/auth/register", {
             method: "POST",
@@ -38,6 +72,7 @@ export default function Form({ type }: { type: "login" | "register" }) {
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
+              name: e.currentTarget.username.value,
               email: e.currentTarget.email.value,
               password: e.currentTarget.password.value,
             }),
@@ -55,8 +90,30 @@ export default function Form({ type }: { type: "login" | "register" }) {
           });
         }
       }}
-      className="flex flex-col space-y-4 bg-gray-50 px-4 py-8 sm:px-16"
-    >
+      className="flex flex-col space-y-4 bg-gray-50 px-4 py-8 sm:px-16">
+
+      {type !== "register" ?  (
+          <p> </p>
+        ) : (
+          <div>
+          <label
+            htmlFor="username"
+            className="block text-xs text-gray-600 uppercase"
+          >
+            full name
+          </label>
+          <input
+            id="username"
+            name="username"
+            type="text"
+            placeholder=" Nombre y Apellido"
+            required
+            className="mt-1 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-black focus:outline-none focus:ring-black sm:text-sm"
+          />
+        </div>
+        )}
+
+
       <div>
         <label
           htmlFor="email"
@@ -110,6 +167,7 @@ export default function Form({ type }: { type: "login" | "register" }) {
             Sign up
           </Link>{" "}
           for free.
+          
         </p>
       ) : (
         <p className="text-center text-sm text-gray-600">
